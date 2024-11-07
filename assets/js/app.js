@@ -12,7 +12,7 @@ class Contact {
     }
 
     set name(value) {
-        this.#name = value;
+        this.#name = capitalizeWord(value);
     }
 
     get name() {
@@ -20,7 +20,7 @@ class Contact {
     }
 
     set city(value) {
-        this.#city = value;
+        this.#city = capitalizeWord(value);
     }
 
     get city() {
@@ -63,56 +63,57 @@ const ERROR = 'error';
 const MAX_CAPACITY = 9;
 
 listen('click', addBtn, () => {
+    let input = data.value;
+
     if (!isGridFull()) return;
     clearDisplay();
-    let input = data.value;
     addContact(input);
 });
 
 function addContact(input) {
-    const inputs = input.split(',').map(item => item.trim());
-
     if (!isValidateInput(input)) return;
 
-    let [ name, city, email ] = data.value.split(',').map(item => item.trim());
+    const inputs = input.split(',').map(item => item.trim());
+
+    let [ name, city, email ] = inputs;
 
     if (!isValidName(name) || !isValidEmail(email) || !city.length > 2) return;
 
     const contactObj = new Contact(name, city, email);
     contacts.unshift(contactObj);
-    loadContacts();
+    listContacts();
     updateCounter();
 }
 
-function loadContacts() {
-    if (contacts.length > 0) {
+function listContacts() {
+    if (contacts.length >= 0) {
         clearGrid();
         contacts.forEach((item, index) => {
             const contactElement = create('div');
             contactElement.classList.add('contact');
             contactElement.setAttribute('data', index);
 
-            const namePlaceholder = create('p');
-            namePlaceholder.textContent =  `Name: ${item.name}`;
-            contactElement.appendChild(namePlaceholder);
-
-            const cityPlaceholder = create('p');
-            cityPlaceholder.textContent =  `City: ${item.city}`;
-            contactElement.appendChild(cityPlaceholder);
-
-            const emailPlaceholder = create('p');
-            emailPlaceholder.textContent =  `Email: ${item.email}`;
-            contactElement.appendChild(emailPlaceholder);
-
+            contactElement.innerHTML = addDivContent(item);
+            grid.appendChild(contactElement);
+            
             listen('click', contactElement, function(){
                 let position = this.getAttribute('data');
+                clearDisplay();
                 contacts.splice(position, 1);
-                loadContacts();
+                listContacts();
                 updateCounter();
             });
-            grid.appendChild(contactElement);
         });
     }
+}
+
+function addDivContent(contact) {
+    let html = '';
+    html = `<p><span class="title">Name:</span> ${contact.name}</p>`;
+    html += `<p><span class="title">City:</span> ${contact.city}</p>`
+    html += `<p><span class="title">Email:</span> ${contact.email}</p>`
+
+    return html;
 }
 
 function isValidateInput(input) {
@@ -139,6 +140,7 @@ function isValidEmail(email) {
     const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     if (!emailPattern.test(email)) {
         displayMessage('Email is not valid, please input valid email', ERROR);
+        return false;
     }
     return true;
 }
@@ -174,4 +176,13 @@ function updateCounter() {
 
 function clearGrid() {
     grid.replaceChildren();
+}
+
+function capitalizeWord(word) {
+    if (word.includes(' ')) {
+        const wordArray = word.split(' ');
+        return wordArray.map(str => 
+            str.charAt(0).toUpperCase() + str.slice(1).toLowerCase()).join(' ');
+    }
+    return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
 }

@@ -138,17 +138,9 @@ input[type=button] {
     }
 }
 
-.grid-container {
-    height: 310px;
-    width: 800px;
-    background-color: rgb(255 255 255 / 5%);
-    border-radius: 5px;
-
-}
-
 .contact-list {
-    width: 780px;
-    height: 300px;
+    width: 770px;
+    height: 290px;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: 90px;
@@ -167,7 +159,11 @@ input[type=button] {
     p {
         text-align: left;
         font-size: 12px;
-        font-weight: 400;
+        font-weight: 300;
+
+        span {
+            font-weight: 700;
+        }
     }
 }
 
