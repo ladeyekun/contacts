@@ -60,7 +60,7 @@ const counter = select('.counter');
 const infoCenter = select('.info-center');
 const addBtn = select('input[type="button"]');
 const ERROR = 'error';
-const MAX_CAPACITY = 9;
+const MAX_CAPACITY = 100;
 
 listen('click', addBtn, () => {
     let input = data.value;
@@ -70,6 +70,8 @@ listen('click', addBtn, () => {
     addContact(input);
 });
 
+updateCounter();
+
 function addContact(input) {
     if (!isValidateInput(input)) return;
 
@@ -77,7 +79,7 @@ function addContact(input) {
 
     let [ name, city, email ] = inputs;
 
-    if (!isValidName(name) || !isValidEmail(email) || !city.length > 2) return;
+    if (!isValidName(name) || !isValidEmail(email) || !isValidCity(city)) return;
 
     const contactObj = new Contact(name, city, email);
     contacts.unshift(contactObj);
@@ -118,8 +120,16 @@ function addDivContent(contact) {
 
 function isValidateInput(input) {
     if (input.split(',').length !== 3) {
-        displayMessage('Input format: name, city, email', ERROR);
+        displayMessage('Please enter contact info (name, city, email)', ERROR);
         data.focus = true;
+        return false;
+    }
+    return true;
+}
+
+function isValidCity(city) {
+    if (city.length < 2) {
+        displayMessage('City must be more than 2 letters', ERROR);
         return false;
     }
     return true;
@@ -128,7 +138,7 @@ function isValidateInput(input) {
 function isValidName(name) {
     if (!name.includes(' ')) {
         displayMessage(
-            'Name must include fist and last name separated by a space',
+            'Name must include first and last name separated by a space',
             ERROR
         );
         return false;
@@ -153,7 +163,7 @@ function isGridFull() {
     return true;
 }
 
-function displayMessage(message, type = 'error') {
+function displayMessage(message, type = '') {
     if (type === 'error') {
         if (!infoCenter.classList.contains('error'))
             infoCenter.classList.add('error');
@@ -172,6 +182,7 @@ function clearDisplay() {
 
 function updateCounter() {
     counter.innerText = contacts.length;
+    if (contacts.length === 0) displayMessage('Contact list is empty');
 }
 
 function clearGrid() {

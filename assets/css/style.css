@@ -16,7 +16,7 @@ a {
 }
 
 .container {
-    width: min(100% - 30px, 920px);
+    width: min(100% - 30px, 1200px);
     margin-inline: auto;
 }
 
@@ -88,10 +88,10 @@ main {
 }
 
 input[type=text] {
-    height: 40px;
-    width: 400px;
+    height: 46px;
+    width: 500px;
     padding: 0 15px;
-    font-size: 14px;
+    font-size: 18px;
     color: #fff;
     background: rgb(255 255 255 / 5%);
     border: 1px solid rgb(255 255 255 / 5%);
@@ -104,62 +104,55 @@ input[type=text]:focus {
 }
 
 input[type=button] {
-    height: 40px;
-    font-size: 14px;
+    height: 46px;
+    font-size: 18px;
     font-weight: 500;
     color: #fff;
     border-radius: 5px;
     background-color: #238636;
+    border: 1px solid #238636;
     padding: 0 40px;
 }
+
 .contacts {
-    /*width: 530px;*/
     text-align: center;
 
     .row {
         min-height: 40px;
 
         h2 {
-            font-size: 25px;
+            font-size: 30px;
             font-weight: 400;
-        }
-    }
-}
-.form {
-
-    form {
-        width: 100%;
-
-        input[type=text] {
-            flex: 1;
-            min-width: 0;
-            box-sizing: border-box;
         }
     }
 }
 
 .contact-list {
-    width: 770px;
-    height: 290px;
+    width: 1070px;
+    height: 407px;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    grid-template-rows: 90px;
+    grid-template-rows: 129px;
     gap: 10px;
+    overflow: hidden;
 }
 
 .contact {
-    width: 250px;
-    height: 90px;
-    border: 1px solid #555;
-    background-color: #333;
+    display: grid;
+    gap: 5px;
+    width: 350px;
+    height: 129px;
+    border: 1px solid rgb(255 255 255 / 5%);
+    background-color: rgb(255 255 255 / 5%);
     border-radius: 4px;
-    padding: 15px;
+    padding: 15px 20px;
     cursor: pointer;
 
     p {
         text-align: left;
-        font-size: 12px;
+        font-size: 16px;
         font-weight: 300;
+        padding: 0;
 
         span {
             font-weight: 700;
@@ -168,12 +161,12 @@ input[type=button] {
 }
 
 .contact:hover {
-    border: 1px solid #f00;
+    border: 1px solid #992b2b;
 }
 
 .counter-container {
     position: fixed;
-    width: 200px;
+    width: 260px;
     height: 50px;
     inset: auto 20px 20px auto;
     background-color: #a64eff;
@@ -181,7 +174,9 @@ input[type=button] {
 
     p {
         line-height: 50px;
-        padding: 0 20px;
+        padding: 0 25px;
+        font-size: 22px;
+        font-weight: 400;
     }
 }
 
