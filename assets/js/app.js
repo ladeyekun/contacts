@@ -49,7 +49,7 @@ function listen(event, selector, callback) {
     return selector.addEventListener(event, callback);
 }
 
-function create(element, scope = Document) {
+function create(element, scope = document) {
     return scope.createElement(element);
 }
 
@@ -60,40 +60,95 @@ const counter = select('.counter');
 const infoCenter = select('.info-center');
 const addBtn = select('input[type="button"]');
 const ERROR = 'error';
+const MAX_CAPACITY = 9;
 
 listen('click', addBtn, () => {
-    let input = data.value.trim();
-    validateInput();
+    if (!isGridFull()) return;
+    clearDisplay();
+    let input = data.value;
+    addContact(input);
 });
 
-function validateInput() {
-    let [ name, city, email ] = data.value.split(',');
-    name = name.trim();
-    city = city.trim();
-    email = email.trim();
+function addContact(input) {
+    const inputs = input.split(',').map(item => item.trim());
 
-    if (!isNameValid(name)){
+    if (!isValidateInput(input)) return;
+
+    let [ name, city, email ] = data.value.split(',').map(item => item.trim());
+
+    if (!isValidName(name) || !isValidEmail(email) || !city.length > 2) return;
+
+    const contactObj = new Contact(name, city, email);
+    contacts.unshift(contactObj);
+    loadContacts();
+    updateCounter();
+}
+
+function loadContacts() {
+    if (contacts.length > 0) {
+        clearGrid();
+        contacts.forEach((item, index) => {
+            const contactElement = create('div');
+            contactElement.classList.add('contact');
+            contactElement.setAttribute('data', index);
+
+            const namePlaceholder = create('p');
+            namePlaceholder.textContent =  `Name: ${item.name}`;
+            contactElement.appendChild(namePlaceholder);
+
+            const cityPlaceholder = create('p');
+            cityPlaceholder.textContent =  `City: ${item.city}`;
+            contactElement.appendChild(cityPlaceholder);
+
+            const emailPlaceholder = create('p');
+            emailPlaceholder.textContent =  `Email: ${item.email}`;
+            contactElement.appendChild(emailPlaceholder);
+
+            listen('click', contactElement, function(){
+                let position = this.getAttribute('data');
+                contacts.splice(position, 1);
+                loadContacts();
+                updateCounter();
+            });
+            grid.appendChild(contactElement);
+        });
+    }
+}
+
+function isValidateInput(input) {
+    if (input.split(',').length !== 3) {
+        displayMessage('Input format: name, city, email', ERROR);
+        data.focus = true;
+        return false;
+    }
+    return true;
+}
+
+function isValidName(name) {
+    if (!name.includes(' ')) {
         displayMessage(
             'Name must include fist and last name separated by a space',
             ERROR
         );
-        return;
+        return false;
     }
-
-    if (!isEmailValid(email)){
-        displayMessage('Email is not valid, please input valid email', ERROR);
-        return;
-    }
+    return true;
 }
 
-function isNameValid(name) {
-    console.log(name.split(' ').length);
-    return name.split(' ').length > 1;
-}
-
-function isEmailValid(email) {
+function isValidEmail(email) {
     const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-    return emailPattern.test(email);
+    if (!emailPattern.test(email)) {
+        displayMessage('Email is not valid, please input valid email', ERROR);
+    }
+    return true;
+}
+
+function isGridFull() {
+    if (contacts.length >= MAX_CAPACITY) {
+        displayMessage('Contact list is full', ERROR);
+        return false;
+    }
+    return true;
 }
 
 function displayMessage(message, type = 'error') {
@@ -107,4 +162,16 @@ function displayMessage(message, type = 'error') {
         }
         infoCenter.innerText = message;
     }
+}
+
+function clearDisplay() {
+    infoCenter.innerText = '';
+}
+
+function updateCounter() {
+    counter.innerText = contacts.length;
+}
+
+function clearGrid() {
+    grid.replaceChildren();
 }
