@@ -1,0 +1,193 @@
+@charset "utf-8";
+
+/*----------------------*/
+/* General Rules        */
+/*----------------------*/
+
+:root {
+    --app-font-color: #f4f5f7;
+    --app-background-color: #222;
+
+    --app-page-height: 100svh;
+}
+
+a {
+    text-decoration: none;
+}
+
+.container {
+    width: min(100% - 30px, 920px);
+    margin-inline: auto;
+}
+
+body {
+    font-family: "Nunito Sans", "Noto Sans", Arial, sans-serif;
+    background-color: var(--app-background-color);
+    color: var(--app-font-color);
+}
+
+.flex {
+    display: flex;
+}
+
+.flex-between {
+    justify-content: space-between;
+}
+
+.grid {
+    display: grid;
+}
+
+.grid-center {
+    place-items: center;
+}
+
+.gap-5 {
+    gap: 5px;
+}
+
+.gap-10 {
+    gap: 10px;
+}
+
+.gap-20 {
+    gap: 20px;
+}
+
+.gap-30 {
+    gap: 30px;
+}
+
+.height-100 {
+    height: 100%;
+}
+
+.center {
+    text-align: center;
+}
+
+.pad-20 {
+    padding: 20px;
+}
+
+.off {
+    display: none;
+}
+
+.on {
+    display: inline;
+}
+
+
+/******************/
+/* Shape factory **/
+/******************/
+
+main {
+    height: var(--app-page-height);
+}
+
+input[type=text] {
+    height: 46px;
+    width: 400px;
+    padding: 0 15px;
+    font-size: 17px;
+    color: #fff;
+    background: rgb(255 255 255 / 5%);
+    border: 1px solid rgb(255 255 255 / 5%);
+    border-radius: 5px;
+    transition: all 0.25s ease-in-out;
+}
+
+input[type=text]:focus {
+    border: 1px solid #881010;
+}
+
+input[type=button] {
+    height: 46px;
+    font-size: 18px;
+    font-weight: 500;
+    color: #fff;
+    border-radius: 5px;
+    background-color: #ff7B00;
+    padding: 0 25px;
+}
+.contacts {
+    /*width: 530px;*/
+    text-align: center;
+
+    .row {
+        min-height: 40px;
+
+        h2 {
+            font-size: 25px;
+            font-weight: 400;
+        }
+    }
+}
+.form {
+
+    form {
+        width: 100%;
+
+        input[type=text] {
+            flex: 1;
+            min-width: 0;
+            box-sizing: border-box;
+        }
+    }
+}
+
+.grid-container {
+    height: 310px;
+    width: 800px;
+    background-color: rgb(255 255 255 / 5%);
+    border-radius: 5px;
+
+}
+
+.contact-list {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: 90px;
+    gap: 10px;
+}
+
+.contact {
+    width: 250px;
+    height: 90px;
+    border: 1px solid #555;
+    background-color: #333;
+    border-radius: 4px;
+    padding: 15px;
+    cursor: pointer;
+
+    p {
+        text-align: left;
+        font-size: 12px;
+        font-weight: 400;
+    }
+}
+
+.contact:hover {
+    border: 1px solid #f00;
+}
+
+.counter-container {
+    position: fixed;
+    width: 200px;
+    height: 50px;
+    inset: auto 20px 20px auto;
+    background-color: #a64eff;
+    border-radius: 25px;
+
+    p {
+        line-height: 50px;
+        padding: 0 20px;
+    }
+}
+
+
+.error {
+    color: #f00;
+}
